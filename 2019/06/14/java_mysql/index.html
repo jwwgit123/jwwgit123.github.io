@@ -26,6 +26,8 @@
     <link rel="icon" href="/images/web_touxiang.jpg">
   
   
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/plugin/bganimation/bg.css">
   
@@ -117,157 +119,23 @@
 <p>在本机登入mysql后，更改“mysql”数据库里的“user”表里的“host”项，从”localhost”改为’%’。</p>
 <a id="more"></a>
 
-<pre><code class="sql">use mysql;
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> host =<span class="string">'%'</span><span class="keyword">where</span> <span class="keyword">user</span> =<span class="string">'root'</span> <span class="keyword">and</span> host =<span class="string">'localhost'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br></pre></td></tr></table></figure>
 
-update user set host =&#39;%&#39;where user =&#39;root&#39; and host =&#39;localhost&#39;;
-
-flush privileges;</code></pre>
 <p>2.构建maven依赖</p>
-<pre><code class="html"> &lt;dependencies&gt;
-   &lt;dependency&gt;
-      &lt;groupId&gt;mysql&lt;/groupId&gt;
-      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
-      &lt;version&gt;5.1.29&lt;/version&gt;
-    &lt;/dependency&gt;
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.29<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">     </span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-  &lt;/dependencies&gt;</code></pre>
 <p>3.连接mysql，默认进入连接数据库的DATABASE为fortest，用户名root ，密码：123456</p>
-<pre><code class="java">package com.jia.connect;
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jia.connect;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">sqlConnect</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Connection</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getSqlConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Connection sqlClient = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 1.加载数据访问驱动</span></span><br><span class="line">            Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line">            <span class="comment">//2.连接到数据"库"上去</span></span><br><span class="line">            sqlClient = DriverManager</span><br><span class="line">                    .getConnection(<span class="string">"jdbc:mysql://localhost:3306/fortest?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"</span>, <span class="string">"root"</span>, <span class="string">"123456"</span>);</span><br><span class="line">            </span><br><span class="line">            System.out.println(<span class="string">"mysql连接成功，获取连接对象： "</span> + sqlClient);</span><br><span class="line">            </span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sqlClient;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-public class sqlConnect {
-    /**
-     * 
-     * @return Connection
-     */
-    public static Connection getSqlConnection() {
-        Connection sqlClient = null;
-        try {
-            // 1.加载数据访问驱动
-            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-            //2.连接到数据&quot;库&quot;上去
-            sqlClient = DriverManager
-                    .getConnection(&quot;jdbc:mysql://localhost:3306/fortest?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&quot;, &quot;root&quot;, &quot;123456&quot;);
-
-            System.out.println(&quot;mysql连接成功，获取连接对象： &quot; + sqlClient);
-
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return sqlClient;
-    }
-}</code></pre>
 <p>##增删改查：<br>单个查询版本</p>
-<pre><code class="java">package com.jia;
-import com.jia.connect.sqlConnect;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-public class Test {
-    public static void main(String[] args) throws Exception{
-        Connection connection = sqlConnect.getSqlConnection();
-        Statement statement = connection.createStatement();
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jia;</span><br><span class="line"><span class="keyword">import</span> com.jia.connect.sqlConnect;</span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.ResultSet;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.sql.Statement;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Connection connection = sqlConnect.getSqlConnection();</span><br><span class="line">        Statement statement = connection.createStatement();</span><br><span class="line"> </span><br><span class="line">        String sql = <span class="string">"select * from fortest.news3 where author = \"Alina Shrourou, B.Sc. (Editor)\""</span>;</span><br><span class="line">        <span class="comment">//ResultSet类，用来存放获取的结果集！！</span></span><br><span class="line">        ResultSet rs = statement.executeQuery(sql);</span><br><span class="line">        <span class="keyword">while</span> (rs.next())&#123;</span><br><span class="line">            String title = rs.getString(<span class="string">"title"</span>);</span><br><span class="line">            System.out.println(title);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        rs.close();</span><br><span class="line">        statement.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        String sql = &quot;select * from fortest.news3 where author = \&quot;Alina Shrourou, B.Sc. (Editor)\&quot;&quot;;
-        //ResultSet类，用来存放获取的结果集！！
-        ResultSet rs = statement.executeQuery(sql);
-        while (rs.next()){
-            String title = rs.getString(&quot;title&quot;);
-            System.out.println(title);
-        }
-
-        rs.close();
-        statement.close();
-        connection.close();
-    }
-}</code></pre>
 <p>增删改查：</p>
-<pre><code class="java">package com.jia;
-import com.jia.connect.sqlConnect;
-import java.sql.*;
-import java.util.ArrayList;
-
-public class Test {
-    public static void main(String[] args) throws Exception{
-        Connection connection = sqlConnect.getSqlConnection();
-        Statement statement = connection.createStatement();
-
-        //ArrayList&lt;String&gt; result = search(statement);
-        //delete(statement);
-        //insertData(connection);
-
-        statement.close();
-        connection.close();
-    }
-
-    /**
-     * 根据news_id 删除数据，删除成功输出1，否则输出0
-     * @param statement
-     * @throws SQLException
-     */
-    public static void delete(Statement statement) throws SQLException {
-        String sql2 = &quot;delete from fortest.news3 where news_id = 2999&quot;;
-        int rs2 = statement.executeUpdate(sql2);
-        System.out.println(rs2);
-    }
-
-    /**
-     * 根据条件查询
-     * @param statement
-     * @return 包含查询结果的一个list
-     * @throws SQLException
-     */
-    public static ArrayList search(Statement statement) throws SQLException{
-        ArrayList&lt;String&gt; result = new ArrayList&lt;&gt;();
-        String sql = &quot;select * from fortest.news3 where news_id &lt;200&quot;;
-        ResultSet resultSet = statement.executeQuery(sql);
-        while (resultSet.next()){
-            String news_id = resultSet.getString(0);
-            String title = resultSet.getString(1);
-            String date = resultSet.getString(2);
-            result.add(news_id);
-            result.add(title);
-            result.add(date);
-        }
-        resultSet.close();
-        return result;
-    }
-
-    /**
-     * 插入一条数据
-     * @param connection
-     * @throws SQLException
-     */
-    public static void insertData (Connection connection) throws SQLException {
-
-        String sql = &quot;insert into fortest.news3 values(?,?,?,?,?,?,?)&quot;;
-        Date date = new Date(new java.util.Date().getTime());
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1,3000);
-        statement.setString(2,&quot;测试&quot;);
-        statement.setDate(3,date);
-        statement.setString(4,&quot;JWW&quot;);
-        statement.setString(5,&quot;&quot;);
-        statement.setString(6,&quot;&quot;);
-        statement.setString(7,&quot;&quot;);
-        int result = statement.executeUpdate();
-        System.out.println(result);
-        statement.close();
-    }
-}</code></pre>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.jia;</span><br><span class="line"><span class="keyword">import</span> com.jia.connect.sqlConnect;</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        Connection connection = sqlConnect.getSqlConnection();</span><br><span class="line">        Statement statement = connection.createStatement();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//ArrayList&lt;String&gt; result = search(statement);</span></span><br><span class="line">        <span class="comment">//delete(statement);</span></span><br><span class="line">        <span class="comment">//insertData(connection);</span></span><br><span class="line"> </span><br><span class="line">        statement.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据news_id 删除数据，删除成功输出1，否则输出0</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> statement</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Statement statement)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        String sql2 = <span class="string">"delete from fortest.news3 where news_id = 2999"</span>;</span><br><span class="line">        <span class="keyword">int</span> rs2 = statement.executeUpdate(sql2);</span><br><span class="line">        System.out.println(rs2);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据条件查询</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> statement</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 包含查询结果的一个list</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ArrayList <span class="title">search</span><span class="params">(Statement statement)</span> <span class="keyword">throws</span> SQLException</span>&#123;</span><br><span class="line">        ArrayList&lt;String&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        String sql = <span class="string">"select * from fortest.news3 where news_id &lt;200"</span>;</span><br><span class="line">        ResultSet resultSet = statement.executeQuery(sql);</span><br><span class="line">        <span class="keyword">while</span> (resultSet.next())&#123;</span><br><span class="line">            String news_id = resultSet.getString(<span class="number">0</span>);</span><br><span class="line">            String title = resultSet.getString(<span class="number">1</span>);</span><br><span class="line">            String date = resultSet.getString(<span class="number">2</span>);</span><br><span class="line">            result.add(news_id);</span><br><span class="line">            result.add(title);</span><br><span class="line">            result.add(date);</span><br><span class="line">        &#125;</span><br><span class="line">        resultSet.close();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 插入一条数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> connection</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertData</span> <span class="params">(Connection connection)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> </span><br><span class="line">        String sql = <span class="string">"insert into fortest.news3 values(?,?,?,?,?,?,?)"</span>;</span><br><span class="line">        Date date = <span class="keyword">new</span> Date(<span class="keyword">new</span> java.util.Date().getTime());</span><br><span class="line">        PreparedStatement statement = connection.prepareStatement(sql);</span><br><span class="line">        statement.setInt(<span class="number">1</span>,<span class="number">3000</span>);</span><br><span class="line">        statement.setString(<span class="number">2</span>,<span class="string">"测试"</span>);</span><br><span class="line">        statement.setDate(<span class="number">3</span>,date);</span><br><span class="line">        statement.setString(<span class="number">4</span>,<span class="string">"JWW"</span>);</span><br><span class="line">        statement.setString(<span class="number">5</span>,<span class="string">""</span>);</span><br><span class="line">        statement.setString(<span class="number">6</span>,<span class="string">""</span>);</span><br><span class="line">        statement.setString(<span class="number">7</span>,<span class="string">""</span>);</span><br><span class="line">        <span class="keyword">int</span> result = statement.executeUpdate();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">        statement.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jiagit.github.io/2019/06/14/java_mysql/" data-id="cjwx8pk2l0002icucuruvvyjy" class="article-share-link">分享</a>
+      <a data-url="https://jiagit.github.io/2019/06/14/java_mysql/" data-id="cjwx9aapq0001tcuc1p2ljgb1" class="article-share-link">分享</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
